@@ -26,7 +26,7 @@ spec:
             - name: ROSETTA_AT_HOME_ACCOUNT_KEY
               valueFrom:
                 configMapKeyRef:
-                  name: configmap
+                  name: raspi-k8s-rah
                   key: account_key
           resources:
             limits:
