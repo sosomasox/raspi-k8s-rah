@@ -6,6 +6,8 @@ This repository used the Docker image created by [raspi-rah](https://github.com/
 The Rosetta@home project recently added support for fighting COVID-19.  
 https://boinc.bakerlab.org/rosetta/forum_thread.php?id=13702  
 
+&nbsp;
+
 
 
 ## Prerequisites
@@ -19,6 +21,8 @@ Operation in the following production environment has been verified.
 
 ### Kubernetes
  - v1.13.5
+
+&nbsp;
 
 
 
@@ -37,11 +41,15 @@ data:
   account_key: <your account key>
 ```
 
+&nbsp;
+
 You can run Rosetta@home on Kubernetes when you issue the following command.  
 
 ```
 kubectl apply -f ./manifests
 ```
+
+&nbsp;
 
 It runs as a **DeamonSet** (runs one replica per node) .  
 You can confirm pod status issuing the following command.  
@@ -50,11 +58,15 @@ You can confirm pod status issuing the following command.
 kubectl -n raspi-k8s-rah get pod
 ```
 
+&nbsp;
+
 The following command can monitor logs of the running pod in real-time.
 
 ```
 kubectl -n raspi-k8s-rah logs -f <pod name>
 ```
+
+&nbsp;
 
 As usual, the client can also be controlled from the command line via the boinccmd command.  
 From the Raspberry Pi, which can issue kubectl command, you can issue commands via,
@@ -63,16 +75,20 @@ From the Raspberry Pi, which can issue kubectl command, you can issue commands v
 kubectl -n raspi-k8s-rah exec <pod name> -- boinccmd <args>
 ```
 
+&nbsp;
+
 If you want to see tasks progress, you should issue a command via,
 
 ```
 kubectl -n raspi-k8s-rah exec <pod name> -- boinccmd --get_tasks
 ```
 
+&nbsp;
+
+
 
 ## Customizing
 If you want to change the resource allocation, you should edit  _**"manifests/rosetta-ds.yaml"**_ .  
-
 
 ### rosetta-ds.yaml
 
