@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: raspi-k8s-rah
+  name: raspi-k8s-rah
+  labels:
+    app: raspi-k8s-rah
+spec:
+  selector:
+      matchLabels:
+        app: raspi-k8s-rah
+  template:
+    metadata:
+      labels:
+        app: raspi-k8s-rah
+    spec:
+      # # This toleration is to have the daemonset runnable on master nodes
+      # # uncomment this section if your masters can run pods
+      # tolerations:
+        # - key: node-role.kubernetes.io/master
+        #   effect: NoSchedule
+      containers:
+        - name: raspi-rah
+          image: "izewfktvy533zjmn/raspi-rah:latest"
+          env:
+            - name: ROSETTA_AT_HOME_ACCOUNT_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap
+                  key: account_key
+          resources:
+            limits:
+              cpu: 2 # How much CPU you wish to donate per node
+              memory: 1Gi
+            requests:
+              cpu: 2
+              memory: 1Gi
