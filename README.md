@@ -1,10 +1,13 @@
 # raspi-k8s-rah
 ## Overview
 Run Rosetta@home on Kubernetes with Raspberry Pi.  
-This repository used the Docker image created by [raspi-rah](https://github.com/izewfktvy533zjmn/raspi-rah)\.  
+This repository used the Docker image created by [raspi-rah](https://github.com/izewfktvy533zjmn/raspi-rah).  
 
 The Rosetta@home project recently added support for fighting COVID-19.  
 https://boinc.bakerlab.org/rosetta/forum_thread.php?id=13702  
+
+I created [Rosetta@home teams](https://boinc.bakerlab.org/rosetta/team.php), which was named [**raspi-k8s-rah**](https://boinc.bakerlab.org/rosetta/team_display.php?teamid=20151).  
+If you like, please participate in this team.  
 
 &nbsp;
 
