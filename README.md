@@ -49,7 +49,9 @@ data:
 You can run Rosetta@home on Kubernetes when you issue the following command.  
 
 ```
-kubectl apply -f ./manifests
+kubectl apply -f ./manifests/namespace.yaml
+kubectl apply -f ./manifests/configmap.yaml
+kubectl apply -f ./manifests/rah-ds.yaml
 ```
 
 &nbsp;
