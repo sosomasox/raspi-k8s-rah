@@ -47,6 +47,7 @@ data:
 &nbsp;
 
 You can run Rosetta@home on Kubernetes when you issue the following command.  
+It runs as a **DeamonSet** (runs one replica per node) .
 
 ```
 kubectl apply -f ./manifests/namespace.yaml
@@ -55,8 +56,7 @@ kubectl apply -f ./manifests/rah-ds.yaml
 ```
 
 &nbsp;
-
-It runs as a **DeamonSet** (runs one replica per node) .  
+  
 You can confirm pod status issuing the following command.  
 
 ```
