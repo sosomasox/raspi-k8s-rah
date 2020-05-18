@@ -7,7 +7,7 @@ metadata:
   name: raspi-k8s-rah-cm
 data:
   account_key: <your account key>
-  cc_config.conf: |
+  cc_config.xml: |
     <cc_config>
       <log_flags>
         <task>1</task>
