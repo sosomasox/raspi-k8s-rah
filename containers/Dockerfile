@@ -8,12 +8,10 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-ENV ROSETTA_AT_HOME_ACCOUNT_KEY=""
+ENV ROSETTA_AT_HOME_ACCOUNT_KEY=
 
-ADD bin/start-rah.sh /usr/bin/
-
-RUN chmod +x /usr/bin/start-rah.sh
+ADD scripts/entrypoint.sh /usr/bin/
 
 WORKDIR /var/lib/boinc
 
-CMD ["/usr/bin/start-rah.sh"]
+CMD ["/usr/bin/entrypoint.sh"]
