@@ -54,6 +54,7 @@ data:
         <alt_platform>aarch64-unknown-linux-gnu</alt_platform>
       </options>
     </cc_config>
+    
 ---
 ```
 
@@ -104,9 +105,9 @@ kubectl -n raspi-k8s-rah exec -c boinc <pod name> -- boinccmd --get_tasks
 
 
 ## Customizing
-If you want to change the resource allocation, you should edit daemonset section on  _**"manifests/raspi-k8s-rah.yaml"**_ .  
+If you want to change the resource allocation, you should edit daemonset section on  _**"manifests/raspi-k8s-rah.yaml"**_ . 
 
-### rosetta-ds.yaml
+### manifests/raspi-k8s-rah.yaml
 
 ```
 ---
