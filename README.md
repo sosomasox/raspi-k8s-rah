@@ -89,7 +89,7 @@ As usual, the client can also be controlled from the command line via the boincc
 From the Raspberry Pi, which can issue kubectl command, you can issue commands via,
 
 ```
-kubectl -n raspi-k8s-rah exec -it -c boinc-client <pod name> -- boinccmd <args>
+kubectl -n raspi-k8s-rah exec -c boinc-client <pod name> -- boinccmd <args>
 ```
 
 &nbsp;
@@ -97,7 +97,7 @@ kubectl -n raspi-k8s-rah exec -it -c boinc-client <pod name> -- boinccmd <args>
 If you want to see tasks progress, you should issue a command via,
 
 ```
-kubectl -n raspi-k8s-rah exec -c boinc <pod name> -- boinccmd --get_tasks
+kubectl -n raspi-k8s-rah exec -c boinc-client <pod name> -- boinccmd --get_tasks
 ```
 
 &nbsp;

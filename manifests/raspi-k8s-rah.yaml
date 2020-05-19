@@ -57,11 +57,11 @@ spec:
       containers:
         - name: boinc
           imagePullPolicy: Always
-          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc:latest"
+          image: "izewfktvy533zjmn/boinc:arm64v8"
 
         - name: boinc-client
           imagePullPolicy: Always
-          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc-client:latest"
+          image: "izewfktvy533zjmn/boinc-client:arm64v8"
           volumeMounts:
             - name: raspi-k8s-rah-config
               mountPath: /var/lib/boinc-client/
