@@ -1,7 +1,7 @@
 #!/bin/bash
 
-/bin/bash -c "/usr/bin/boinc &"
-sleep 10
+sleep 30
+
 /usr/bin/boinccmd --read_cc_config
 
 if [ $ROSETTA_AT_HOME_ACCOUNT_KEY != "" ]; then
@@ -16,3 +16,5 @@ if [ $ROSETTA_AT_HOME_ACCOUNT_KEY != "" ]; then
     
     tail -f /dev/null
 fi
+
+exit 0

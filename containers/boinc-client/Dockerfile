@@ -12,6 +12,4 @@ ENV ROSETTA_AT_HOME_ACCOUNT_KEY=
 
 ADD scripts/entrypoint.sh /usr/bin/
 
-WORKDIR /var/lib/boinc
-
 CMD ["/usr/bin/entrypoint.sh"]
