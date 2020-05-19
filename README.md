@@ -16,7 +16,7 @@ If you like, please participate in this team.
 Operation in the following production environment has been verified.  
 
 ### Raspberry Pi 4 Model B 2G/4G RAM
- - [ubuntu-18.04.4-preinstalled-server-arm64+raspi3.img](https://ubuntu.com/download/raspberry-pi)
+ - [ubuntu-18.04.4-preinstalled-server-arm64+raspi4.img.xz](http://cdimage.ubuntu.com/releases/18.04/release/)
 
 ### Docker
  - v19.03.8
