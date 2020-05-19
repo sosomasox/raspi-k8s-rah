@@ -1,7 +1,6 @@
 # raspi-k8s-rah
 ## Overview
 Run Rosetta@home on Kubernetes with Raspberry Pi.  
-This repository used the Docker image created by [raspi-rah](https://github.com/izewfktvy533zjmn/raspi-rah).  
 
 The Rosetta@home project recently added support for fighting COVID-19.  
 https://boinc.bakerlab.org/rosetta/forum_thread.php?id=13702  
@@ -23,25 +22,39 @@ Operation in the following production environment has been verified.
  - v19.03.8
 
 ### Kubernetes
- - v1.13.5
+ - v1.17.5
 
 &nbsp;
 
 
 
 ## Usage
-First of all, you need to edit _**"manifests/configmap.yaml"**_ .  
+First of all, you need to edit configmap section on _**"manifests/raspi-k8s-rah.yaml"**_ .  
 Please fill in your Rosetta@home account key instead of _**"\<your account key\>"**_ .  
 
-### manifests/configmap.yaml
+### manifests/raspi-k8s-rah.yaml
 ```
+---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: raspi-k8s-rah
-  name: raspi-k8s-rah
+  name: raspi-k8s-rah-cm
 data:
   account_key: <your account key>
+  cc_config.conf: |
+    <cc_config>
+      <log_flags>
+        <task>1</task>
+        <file_xfer>1</file_xfer>
+        <sched_ops>1</sched_ops>
+      </log_flags>
+      <options>
+        <alt_platform>aarch64-unknown-linux-gnu</alt_platform>
+      </options>
+    </cc_config>
+---
 ```
 
 &nbsp;
@@ -50,9 +63,7 @@ You can run Rosetta@home on Kubernetes when you issue the following command.
 It runs as a **DeamonSet** (runs one replica per node) .
 
 ```
-kubectl apply -f ./manifests/namespace.yaml
-kubectl apply -f ./manifests/configmap.yaml
-kubectl apply -f ./manifests/rah-ds.yaml
+kubectl apply -f ./manifests/
 ```
 
 &nbsp;
@@ -68,7 +79,7 @@ kubectl -n raspi-k8s-rah get pod
 The following command can monitor logs of the running pod in real-time.
 
 ```
-kubectl -n raspi-k8s-rah logs -f <pod name>
+kubectl -n raspi-k8s-rah logs -f -c boinc <pod name>
 ```
 
 &nbsp;
@@ -77,7 +88,7 @@ As usual, the client can also be controlled from the command line via the boincc
 From the Raspberry Pi, which can issue kubectl command, you can issue commands via,
 
 ```
-kubectl -n raspi-k8s-rah exec <pod name> -- boinccmd <args>
+kubectl -n raspi-k8s-rah exec -it -c boinc-client <pod name> -- boinccmd <args>
 ```
 
 &nbsp;
@@ -85,7 +96,7 @@ kubectl -n raspi-k8s-rah exec <pod name> -- boinccmd <args>
 If you want to see tasks progress, you should issue a command via,
 
 ```
-kubectl -n raspi-k8s-rah exec <pod name> -- boinccmd --get_tasks
+kubectl -n raspi-k8s-rah exec -c boinc <pod name> -- boinccmd --get_tasks
 ```
 
 &nbsp;
@@ -93,11 +104,13 @@ kubectl -n raspi-k8s-rah exec <pod name> -- boinccmd --get_tasks
 
 
 ## Customizing
-If you want to change the resource allocation, you should edit  _**"manifests/rosetta-ds.yaml"**_ .  
+If you want to change the resource allocation, you should edit daemonset section on  _**"manifests/raspi-k8s-rah.yaml"**_ .  
 
 ### rosetta-ds.yaml
 
 ```
+---
+
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -114,19 +127,32 @@ spec:
       labels:
         app: raspi-k8s-rah
     spec:
+      volumes:
+        - name: raspi-k8s-rah-config
+          configMap: 
+            name: raspi-k8s-rah-cm
       # # This toleration is to have the daemonset runnable on master nodes
       # # uncomment this section if your masters can run pods
       # tolerations:
         # - key: node-role.kubernetes.io/master
         #   effect: NoSchedule
       containers:
-        - name: raspi-rah
-          image: "izewfktvy533zjmn/raspi-rah:latest"
+        - name: boinc
+          imagePullPolicy: Always
+          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc:latest"
+
+        - name: boinc-client
+          imagePullPolicy: Always
+          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc-client:latest"
+          volumeMounts:
+            - name: raspi-k8s-rah-config
+              mountPath: /var/lib/boinc-client/
+              readOnly: true
           env:
             - name: ROSETTA_AT_HOME_ACCOUNT_KEY
               valueFrom:
                 configMapKeyRef:
-                  name: raspi-k8s-rah
+                  name: raspi-k8s-rah-cm
                   key: account_key
           resources:
             limits:
@@ -135,4 +161,6 @@ spec:
             requests:
               cpu: 2
               memory: 1Gi
+
+---
 ```

@@ -1,0 +1,83 @@
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  namespace: raspi-k8s-rah
+  name: raspi-k8s-rah
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: raspi-k8s-rah
+  name: raspi-k8s-rah-cm
+data:
+  account_key: <your account key>
+  cc_config.conf: |
+    <cc_config>
+      <log_flags>
+        <task>1</task>
+        <file_xfer>1</file_xfer>
+        <sched_ops>1</sched_ops>
+      </log_flags>
+      <options>
+        <alt_platform>aarch64-unknown-linux-gnu</alt_platform>
+      </options>
+    </cc_config>
+
+---
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: raspi-k8s-rah
+  name: raspi-k8s-rah
+  labels:
+    app: raspi-k8s-rah
+spec:
+  selector:
+      matchLabels:
+        app: raspi-k8s-rah
+  template:
+    metadata:
+      labels:
+        app: raspi-k8s-rah
+    spec:
+      volumes:
+        - name: raspi-k8s-rah-config
+          configMap: 
+            name: raspi-k8s-rah-cm
+      # # This toleration is to have the daemonset runnable on master nodes
+      # # uncomment this section if your masters can run pods
+      # tolerations:
+        # - key: node-role.kubernetes.io/master
+        #   effect: NoSchedule
+      containers:
+        - name: boinc
+          imagePullPolicy: Always
+          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc:latest"
+
+        - name: boinc-client
+          imagePullPolicy: Always
+          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc-client:latest"
+          volumeMounts:
+            - name: raspi-k8s-rah-config
+              mountPath: /var/lib/boinc-client/
+              readOnly: true
+          env:
+            - name: ROSETTA_AT_HOME_ACCOUNT_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: raspi-k8s-rah-cm
+                  key: account_key
+          resources:
+            limits:
+              cpu: 2 # How much CPU you wish to donate per node
+              memory: 1Gi
+            requests:
+              cpu: 2
+              memory: 1Gi
+
+---
