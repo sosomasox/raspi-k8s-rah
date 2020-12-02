@@ -1,6 +1,6 @@
 # raspi-k8s-rah
 ## Overview
-Run Rosetta@home on Kubernetes with Raspberry Pi.  
+Participate Rosetta@home on Kubernetes with Raspberry Pi.  
 
 The Rosetta@home project recently added support for fighting COVID-19.  
 https://boinc.bakerlab.org/rosetta/forum_thread.php?id=13702  
@@ -132,11 +132,6 @@ spec:
         - name: raspi-k8s-rah-config
           configMap: 
             name: raspi-k8s-rah-cm
-      # # This toleration is to have the daemonset runnable on master nodes
-      # # uncomment this section if your masters can run pods
-      # tolerations:
-        # - key: node-role.kubernetes.io/master
-        #   effect: NoSchedule
       containers:
         - name: boinc
           imagePullPolicy: Always
