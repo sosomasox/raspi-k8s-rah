@@ -49,11 +49,6 @@ spec:
         - name: raspi-k8s-rah-config
           configMap: 
             name: raspi-k8s-rah-cm
-      # # This toleration is to have the daemonset runnable on master nodes
-      # # uncomment this section if your masters can run pods
-      # tolerations:
-        # - key: node-role.kubernetes.io/master
-        #   effect: NoSchedule
       containers:
         - name: boinc
           imagePullPolicy: Always
