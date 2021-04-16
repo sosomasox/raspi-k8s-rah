@@ -110,7 +110,6 @@ If you want to change the resource allocation, you should edit daemonset section
 ### manifests/raspi-k8s-rah.yaml
 
 ```
----
 
 apiVersion: apps/v1
 kind: DaemonSet
@@ -135,11 +134,11 @@ spec:
       containers:
         - name: boinc
           imagePullPolicy: Always
-          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc:latest"
+          image: "sosomasox/boinc:arm64"
 
         - name: boinc-client
           imagePullPolicy: Always
-          image: "izewfktvy533zjmn/raspi-k8s-rah-boinc-client:latest"
+          image: "sosomasox/boinc-client:arm64"
           volumeMounts:
             - name: raspi-k8s-rah-config
               mountPath: /var/lib/boinc-client/
@@ -153,10 +152,10 @@ spec:
           resources:
             limits:
               cpu: 2 # How much CPU you wish to donate per node
-              memory: 1Gi
+              memory: 2Gi
             requests:
               cpu: 2
-              memory: 1Gi
+              memory: 2Gi
 
 ---
 ```
